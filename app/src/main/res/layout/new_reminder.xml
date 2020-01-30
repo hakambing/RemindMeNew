@@ -152,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/set_time"
                 android:textSize="15dp"
-                android:textColor="@color/abc_secondary_text_material_dark"
+                android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:headerBackground="#000000"
             android:numbersSelectorColor="#000000"
-            android:timePickerMode="spinner"
+
             android:layout_centerHorizontal="true"
             />
 
@@ -348,7 +348,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/set_repeat_no"
                         android:textSize="15dp"
-                        android:textColor="@color/abc_secondary_text_material_dark"
+                        android:textColor="@color/colorPrimary"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -410,7 +410,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/set_repeat_type"
                         android:textSize="15dp"
-                        android:textColor="@color/abc_secondary_text_material_dark"
+                        android:textColor="@color/colorPrimary"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
