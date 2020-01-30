@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RemindMe</string>
+    <string name="no_cardetails">Click on the button below to begin creating your reminder!</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="repeat">Repeat</string>
+</resources>
