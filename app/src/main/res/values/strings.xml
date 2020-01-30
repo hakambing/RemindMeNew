@@ -5,4 +5,9 @@
     <string name="time">Time</string>
     <string name="repeat">Repeat</string>
     <string name="sound">Sound</string>
+    <string name="image">Add Image</string>
+    <string name="no_list">Click on the add button to add a reminder</string>
+    <string name="repeat_no">Repetition Interval</string>
+    <string name="repeat_type">Types of Repetitions</string>
+
 </resources>
