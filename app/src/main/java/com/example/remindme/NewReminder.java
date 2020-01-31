@@ -2,7 +2,9 @@ package com.example.remindme;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -52,15 +54,27 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
     RelativeLayout date;
     RelativeLayout dateShow;
+    DatePicker simpleDatePicker;
+    Button dateSubmit;
 
     RelativeLayout time;
     RelativeLayout timeShow;
+    TimePicker simpleTimePicker;
+    Button timeSubmit;
 
     Switch switchRepeat;
     RelativeLayout repeatNum;
     RelativeLayout repeatType;
     RelativeLayout repeatNumShow;
     RelativeLayout repeatTypeShow;
+    EditText repeatNoEditText;
+    Button repeatNoSubmit;
+
+    TextView rptMinute;
+    TextView rptHour;
+    TextView rptDay;
+    TextView rptWeek;
+    TextView rptMonth;
 
     Button cancelBtn;
 
@@ -113,7 +127,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         switchSound = (Switch) findViewById(R.id.sound_switch);
 
         // Initialize default values
-        mActive = "true";
+
         mRepeat = "true";
         mRepeatNo = Integer.toString(1);
         mRepeatType = "Hour";
@@ -151,35 +165,8 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         mRepeatTypeText.setText(mRepeatType);
         mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
 
-        // To save state on device rotation
-        if (savedInstanceState != null) {
-            String savedTitle = savedInstanceState.getString(KEY_TITLE);
-            mTitleText.setText(savedTitle);
-            mTitle = savedTitle;
 
-            String savedTime = savedInstanceState.getString(KEY_TIME);
-            mTimeText.setText(savedTime);
-            mTime = savedTime;
-
-            String savedDate = savedInstanceState.getString(KEY_DATE);
-            mDateText.setText(savedDate);
-            mDate = savedDate;
-
-            String saveRepeat = savedInstanceState.getString(KEY_REPEAT);
-            mRepeatText.setText(saveRepeat);
-            mRepeat = saveRepeat;
-
-            String savedRepeatNo = savedInstanceState.getString(KEY_REPEAT_NO);
-            mRepeatNoText.setText(savedRepeatNo);
-            mRepeatNo = savedRepeatNo;
-
-            String savedRepeatType = savedInstanceState.getString(KEY_REPEAT_TYPE);
-            mRepeatTypeText.setText(savedRepeatType);
-            mRepeatType = savedRepeatType;
-
-
-        }
-
+        //Date
         date = findViewById(R.id.date);
         dateShow = findViewById(R.id.dateShow);
         date.setOnClickListener(new View.OnClickListener(){
@@ -192,6 +179,22 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
         });
 
+        simpleDatePicker = (DatePicker) findViewById(R.id.DatePicker);
+        dateSubmit = (Button) findViewById(R.id.submitDate);
+        dateSubmit.setOnClickListener(new View.OnClickListener(){
+            int monthOfYear;
+            @Override
+            public void onClick(View v){
+                monthOfYear ++;
+                int mDay = simpleDatePicker.getDayOfMonth();
+                int mMonth = simpleDatePicker.getMonth() + 1;
+                int mYear = simpleDatePicker.getYear();
+                mDate = mDay + "/" + mMonth + "/" + mYear;
+                mDateText.setText(mDate);
+            }
+        });
+
+        //time
         time = findViewById(R.id.time);
         timeShow = findViewById(R.id.timeShow);
         time.setOnClickListener(new View.OnClickListener(){
@@ -202,6 +205,23 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                 timeShow.setVisibility(visible ? View.VISIBLE: View.GONE);
             }
 
+        });
+
+        simpleTimePicker = (TimePicker) findViewById(R.id.timePicker1);
+        timeSubmit = (Button) findViewById(R.id.submitTime);
+        timeSubmit.setOnClickListener(new View.OnClickListener(){
+            int monthOfYear;
+            @Override
+            public void onClick(View v){
+                mHour = simpleTimePicker.getHour();
+                mMinute = simpleTimePicker.getMinute();
+                if (mMinute < 10) {
+                    mTime = mHour + ":" + "0" + mMinute;
+                } else {
+                    mTime = mHour + ":" + mMinute;
+                }
+                mTimeText.setText(mTime);
+            }
         });
 
         switchRepeat = findViewById(R.id.repeat_switch);
@@ -215,9 +235,17 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                 if (switchRepeat.isChecked()){
                     repeatNum.setVisibility(View.VISIBLE);
                     repeatType.setVisibility(View.VISIBLE);
+
+                    mRepeat = "true";
+                    mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
                 }else{
                     repeatNum.setVisibility(View.GONE);
                     repeatType.setVisibility(View.GONE);
+                    repeatNumShow.setVisibility(View.GONE);
+                    repeatTypeShow.setVisibility(View.GONE);
+
+                    mRepeat = "false";
+                    mRepeatText.setText("Off");
                 }
             }
         });
@@ -237,6 +265,72 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                 repeatTypeShow.setVisibility(visible ? View.VISIBLE: View.GONE);
             }
         });
+        //confirm repeatNum
+        repeatNoEditText = findViewById(R.id.repeatNoEditText);
+        repeatNoSubmit = findViewById(R.id.repeatNoSubmit);
+        repeatNoSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String repeatEditTextStr = repeatNoEditText.getText().toString();
+                mRepeatNoText.setText(repeatEditTextStr);
+                mRepeatText.setText("Every " + repeatEditTextStr + " " + mRepeatType + "(s)");
+
+            }
+        });
+
+        //confirm Repeat Type Start
+        rptMinute = findViewById(R.id.minute);
+        rptHour = findViewById(R.id.hour);
+        rptDay = findViewById(R.id.day);
+        rptWeek = findViewById(R.id.week);
+        rptMonth = findViewById(R.id.month);
+        rptMinute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRepeatType = "Minute";
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+
+            }
+        });
+        rptHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRepeatType = "Hour";
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+
+            }
+        });
+        rptDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRepeatType = "Day";
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+
+            }
+        });
+        rptWeek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRepeatType = "Week";
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+
+            }
+        });
+        rptMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRepeatType = "Month";
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+
+            }
+        });
+
+
 
         cancelBtn = findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener(){
@@ -291,6 +385,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
     }
 
+    //codes for "Add Image" function
     private void pickImageFromGallery(){
         //intent to pick image
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -328,10 +423,8 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
 
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-    }
+
 
     @Override
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
@@ -351,6 +444,11 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
     }
 }

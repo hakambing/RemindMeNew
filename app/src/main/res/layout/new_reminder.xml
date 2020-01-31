@@ -110,7 +110,23 @@
             android:layout_height="wrap_content"
             android:headerBackground="#0084b4"
             android:numbersSelectorColor="#000000"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            android:spinnersShown="true"
+            />
+            <Button
+                android:id="@+id/submitDate"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/DatePicker"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="#150"
+                android:text="Confirm"
+                android:textColor="#fff"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -172,9 +188,21 @@
             android:layout_height="wrap_content"
             android:headerBackground="#000000"
             android:numbersSelectorColor="#000000"
-
+            android:timePickerMode="spinner"
             android:layout_centerHorizontal="true"
             />
+        <Button
+            android:id="@+id/submitTime"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timePicker1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="#150"
+            android:text="Confirm"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -288,7 +316,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/set_repeat"
                         android:textSize="15dp"
-                        android:textColor="@color/abc_secondary_text_material_dark"
+                        android:textColor="@color/colorPrimary"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
@@ -302,7 +330,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginLeft="8dp"
                     android:onClick="onSwitchRepeat"
-                    android:checked="false"
+                    android:checked="true"
                     android:textOn="On"
                     android:textOff="Off"/>
 
@@ -316,7 +344,7 @@
                 android:onClick="setRepeatNo"
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_height="72dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <ImageView
@@ -366,7 +394,20 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:hint="Enter number"
+                    android:id="@+id/repeatNoEditText"
                     ></EditText>
+                <Button
+                    android:id="@+id/repeatNoSubmit"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/repeatNoEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:background="#150"
+                    android:text="Confirm"
+                    android:textColor="#fff"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
             </RelativeLayout>
 
@@ -378,7 +419,7 @@
                 android:onClick="selectRepeatType"
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_height="72dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <ImageView
