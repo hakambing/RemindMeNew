@@ -9,5 +9,12 @@
     <string name="no_list">Click on the add button to add a reminder</string>
     <string name="repeat_no">Repetition Interval</string>
     <string name="repeat_type">Types of Repetitions</string>
+    <string name="editor_delete_reminder_failed">Error</string>
+    <string name="editor_delete_reminder_successful">Reminder deleted</string>
+    <string name="editor_insert_reminder_failed">Error</string>
+    <string name="editor_insert_reminder_successful">Reminder saved</string>
+    <string name="editor_update_reminder_failed">Error</string>
+    <string name="editor_update_reminder_successful">Reminder updated</string>
+    <string name="repeat_off">Off</string>
 
 </resources>

@@ -30,11 +30,11 @@ public class AlarmReminderProvider extends ContentProvider {
 
     }
 
-    private AlarmReminderDbHelper mDbHelper;
+    private DatabaseHelper mDbHelper;
 
     @Override
     public boolean onCreate() {
-        mDbHelper = new AlarmReminderDbHelper(getContext());
+        mDbHelper = new DatabaseHelper(getContext());
         return true;
     }
 
