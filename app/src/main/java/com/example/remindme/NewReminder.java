@@ -1,6 +1,7 @@
 package com.example.remindme;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -85,6 +86,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
     Button cancelBtn;
     Button deleteBtn;
     Button saveBtn;
+    Button viewAllBtn;
 
     ImageView mImageView;
     RelativeLayout mChooseBtn;
@@ -388,6 +390,8 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
         //save button
         saveBtn = findViewById(R.id.setBtn);
+        viewAllBtn = findViewById(R.id.viewReminderBtn);
+
         //image selector
         mImageView = findViewById(R.id.image_view);
         mChooseBtn = findViewById(R.id.image);
@@ -429,8 +433,9 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                 deleteImage.setVisibility(View.GONE);
             }
         });
-        AddData();
 
+        AddData();
+        viewAll();
     }
 
     //delete reminder
@@ -458,14 +463,16 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         finish();
     }
 
-    public void AddData(){
+   public void AddData(){
         saveBtn.setOnClickListener(
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        boolean isInserted = myDb.insertData(mTitle,mDate,mTime,mRepeatNo,mRepeatType,mSound);
+                        boolean isInserted = myDb.insertData(mTitle,mDate,mTime,mRepeat,mRepeatNo,mRepeatType,mSound);
                         if (isInserted==true){
                             Toast.makeText(NewReminder.this,"Reminder Saved!", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(NewReminder.this, MainActivity.class);
+                            startActivity(i);
                         }else{
                             Toast.makeText(NewReminder.this, "Error saving reminder.", Toast.LENGTH_LONG).show();
                         }
@@ -544,6 +551,44 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
     }
 
 
+    public void viewAll(){
+        viewAllBtn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Cursor data = myDb.getAllData();
+                        if(data.getCount()==0){
+                            showMessage("no data sial","dog");
+                            return;
+                        }
+                        StringBuffer buffer = new StringBuffer();
+                        while (data.moveToNext()){
+                            buffer.append("Id :"+data.getString(0)+"\n");
+                            buffer.append("Title :"+data.getString(1)+"\n");
+                            buffer.append("Date :"+data.getString(2)+"\n");
+                            buffer.append("Time :"+data.getString(3)+"\n");
+                            buffer.append("Repeat :"+data.getString(5)+"\n");
+                            buffer.append("RepeatNo :"+data.getString(6)+"\n");
+                            buffer.append("RepeatType :"+data.getString(7)+"\n");
+                            buffer.append("Sound :"+data.getString(8)+"\n\n");
+
+
+                        }
+                        //show all data
+                        showMessage("Data",buffer.toString());
+
+                    }
+                }
+        );
+    }
+
+    public void showMessage(String title,String Message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(Message);
+        builder.show();
+    }
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {

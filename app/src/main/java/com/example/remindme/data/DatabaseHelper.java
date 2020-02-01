@@ -9,16 +9,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "remindme.db";
-    public static final String TABLE_NAME = "reminders_table";
+    public static final String DATABASE_NAME = "remindmesalakau.db";
+    public static final String TABLE_NAME = "salakau";
     public static final String COL_1 = "_ID";
     public static final String COL_2 = "TITLE";
     public static final String COL_3 = "DATE";
     public static final String COL_4 = "TIME";
     public static final String COL_5 = "IMAGE";
-    public static final String COL_6 = "REPEAT_NO";
-    public static final String COL_7 = "REPEAT_TYPE";
-    public static final String COL_8 = "SOUND";
+    public static final String COL_6 = "REPEAT";
+    public static final String COL_7 = "REPEAT_NO";
+    public static final String COL_8 = "REPEAT_TYPE";
+    public static final String COL_9 = "SOUND";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -27,7 +28,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME +" (_ID INTEGER PRIMARY KEY AUTOINCREMENT,TITLE TEXT, DATE TEXT, TIME TEXT, REPEAT_NO TEXT, REPEAT_TYPE TEXT, SOUND TEXT )");
+
+        db.execSQL("create table " + TABLE_NAME +" (_ID INTEGER PRIMARY KEY AUTOINCREMENT,TITLE TEXT, DATE TEXT, TIME TEXT,REPEAT TEXT, REPEAT_NO TEXT, REPEAT_TYPE TEXT, SOUND TEXT )");
     }
 
     @Override
@@ -37,15 +39,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean insertData(String title, String date, String time, String repeat_no, String repeat_type, String sound){
+   public boolean insertData(String title, String date, String time,String repeat, String repeat_no, String repeat_type, String sound){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2,title);
         contentValues.put(COL_3,date);
         contentValues.put(COL_4,time);
-        contentValues.put(COL_6,repeat_no);
-        contentValues.put(COL_7,repeat_type);
-        contentValues.put(COL_8,sound);
+        contentValues.put(COL_6,repeat);
+        contentValues.put(COL_7,repeat_no);
+        contentValues.put(COL_8,repeat_type);
+        contentValues.put(COL_9,sound);
         long result = db.insert(TABLE_NAME,null, contentValues);
         if (result == -1){
             return false;

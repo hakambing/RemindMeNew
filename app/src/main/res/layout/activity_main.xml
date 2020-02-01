@@ -25,41 +25,19 @@
             android:textStyle="bold"/>
         </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/textViewReminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:fontFamily="monospace"
-        android:text="Reminder"
-        android:textColor="#000000"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
+
+
 
 
     <ListView
         android:id="@+id/reminderList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/textViewReminder"
+        android:layout_below="@id/toolbar"
         ></ListView>
 
-    <RelativeLayout
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/no_reminder_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="16dp"
-            android:gravity="center"
-            android:text="@string/no_list"/>
-    </RelativeLayout>
+
 
 
 

@@ -7,10 +7,13 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     DatabaseHelper myDb;
     ListView reminderListView;
     ProgressDialog prgDialog;
+    RemindCursorAdapter mCursorAdapter;
 
     private static final int VEHICLE_LOADER = 0;
 
@@ -34,28 +38,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //ListView
-        ListView listView = (ListView) findViewById(R.id.reminderList);
         myDb = new DatabaseHelper(this);
 
-        ArrayList<String> reminderList = new ArrayList<>();
-        Cursor data = myDb.getAllData();
+        //ListView
+        reminderListView = (ListView) findViewById(R.id.reminderList);
 
-        if(data.getCount() == 0){
-            Toast.makeText(MainActivity.this,"No Reminders",Toast.LENGTH_LONG).show();
-        }else{
-            while(data.moveToNext()){
-                reminderList.add(data.getString(1));
-                reminderList.add(data.getString(2));
-                reminderList.add(data.getString(3));
-                reminderList.add(data.getString(5));
-                reminderList.add(data.getString(6));
-                reminderList.add(data.getString(7));
-                /*ListAdapter listAdapter = new ArrayAdapter<>(this.an)*/
 
-            }
-        }
+
+        mCursorAdapter = new RemindCursorAdapter(this,null);
+        reminderListView.setAdapter(mCursorAdapter);
+
+
+
+
         //Floating action button
         FloatingActionButton fab1 = findViewById(R.id.addReminderFab);
 
@@ -87,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @NonNull
     @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return null;
     }
 
