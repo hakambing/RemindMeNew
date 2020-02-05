@@ -556,21 +556,21 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Cursor data = myDb.getAllData();
-                        if(data.getCount()==0){
+                        Cursor res = myDb.getAllData();
+                        if(res.getCount()==0){
                             showMessage("no data sial","dog");
                             return;
                         }
                         StringBuffer buffer = new StringBuffer();
-                        while (data.moveToNext()){
-                            buffer.append("Id :"+data.getString(0)+"\n");
-                            buffer.append("Title :"+data.getString(1)+"\n");
-                            buffer.append("Date :"+data.getString(2)+"\n");
-                            buffer.append("Time :"+data.getString(3)+"\n");
-                            buffer.append("Repeat :"+data.getString(5)+"\n");
-                            buffer.append("RepeatNo :"+data.getString(6)+"\n");
-                            buffer.append("RepeatType :"+data.getString(7)+"\n");
-                            buffer.append("Sound :"+data.getString(8)+"\n\n");
+                        while (res.moveToNext()){
+                            buffer.append("Id :"+res.getString(0)+"\n");
+                            buffer.append("Title :"+res.getString(1)+"\n");
+                            buffer.append("Date :"+res.getString(2)+"\n");
+                            buffer.append("Time :"+res.getString(3)+"\n");
+                            buffer.append("Repeat :"+res.getString(4)+"\n");
+                            buffer.append("RepeatNo :"+res.getString(5)+"\n");
+                            buffer.append("RepeatType :"+res.getString(6)+"\n");
+                            buffer.append("Sound :"+res.getString(7)+"\n\n");
 
 
                         }

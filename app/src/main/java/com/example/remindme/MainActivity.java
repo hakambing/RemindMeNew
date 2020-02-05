@@ -28,25 +28,45 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     DatabaseHelper myDb;
+    ArrayList<Reminder> reminderList;
     ListView reminderListView;
+    Reminder reminder;
     ProgressDialog prgDialog;
     RemindCursorAdapter mCursorAdapter;
 
-    private static final int VEHICLE_LOADER = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         myDb = new DatabaseHelper(this);
 
-        //ListView
-        reminderListView = (ListView) findViewById(R.id.reminderList);
+
+        reminderList = new ArrayList<>();
+        Cursor data = myDb.getAllData();
+        int numRows = data.getCount();
+        if(numRows == 0){
+            Toast.makeText(MainActivity.this,"There is nothing",Toast.LENGTH_LONG).show();
+        }
+        else{
+            while(data.moveToNext()){
+                reminder = new Reminder(data.getString(1),data.getString(2),data.getString(3),data.getString(4),data.getString(5),data.getString(6),data.getString(7));
+                reminderList.add(reminder);
+
+            }
+            Alarm_Items adapter = new Alarm_Items(this,R.layout.alarm_items,reminderList);
+            reminderListView = (ListView) findViewById(R.id.reminderList);
+            reminderListView.setAdapter(adapter);
+        }
 
 
 
-        mCursorAdapter = new RemindCursorAdapter(this,null);
-        reminderListView.setAdapter(mCursorAdapter);
+
+
+
+
 
 
 
@@ -74,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        myDb = new DatabaseHelper(this);
 
 
     }

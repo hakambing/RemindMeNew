@@ -15,7 +15,17 @@ public class RemindCursorAdapter extends android.widget.CursorAdapter {
     private ImageView mSoundImage;
 
     public RemindCursorAdapter(Context context, Cursor c) { super(context, c, 0 /* flags */); }
+
     @Override
+    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+        return null;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+
+    }}
+    /*@Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.alarm_items, parent, false);
 
@@ -28,13 +38,13 @@ public class RemindCursorAdapter extends android.widget.CursorAdapter {
         mRepeatInfoText = (TextView) view.findViewById(R.id.recycle_repeat_info);
         mSoundImage = (ImageView) view.findViewById(R.id.active_image);
 
-        int titleColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_2);
-        int dateColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_3);
-        int timeColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_4);
-        int repeatColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_6);
-        int repeatNoColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_7);
-        int repeatTypeColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_8);
-        int activeColumnIndex = cursor.getColumnIndex(DatabaseHelper.COL_9);
+        int titleColumnIndex = cursor.getColumnIndex("TITLE");
+        int dateColumnIndex = cursor.getColumnIndex("DATE");
+        int timeColumnIndex = cursor.getColumnIndex("TIME");
+        int repeatColumnIndex = cursor.getColumnIndex("REPEAT");
+        int repeatNoColumnIndex = cursor.getColumnIndex("REPEAT_NO");
+        int repeatTypeColumnIndex = cursor.getColumnIndex("REPEAT_TYPE");
+        int activeColumnIndex = cursor.getColumnIndex("SOUND");
 
         String title = cursor.getString(titleColumnIndex);
         String date = cursor.getString(dateColumnIndex);
@@ -86,3 +96,4 @@ public class RemindCursorAdapter extends android.widget.CursorAdapter {
         }
     }
 }
+*/
