@@ -77,6 +77,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
+    //Update
+    public void updateData(String titleNew, String dateNew, String timeNew,String repeatNew, String repeat_noNew, String repeat_typeNew, String soundNew, int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE salakau SET" +
+                " TITLE = '" + titleNew + "'," +
+                " DATE = '" + dateNew + "'," +
+                " TIME = '" + timeNew + "'," +
+                " REPEAT = '" + repeatNew + "'," +
+                " REPEAT_NO = '" + repeat_noNew + "'," +
+                " REPEAT_TYPE = '" + repeat_typeNew + "'," +
+                " SOUND = '" + soundNew + "'" +
+                " WHERE _ID = '" + id + "'";
+        db.execSQL(query);
+    }
+
+    //Delete
+    public void deleteData(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM salakau WHERE _ID = '" + id + "'";
+        db.execSQL(query);
+    }
+
 
 
     public Cursor getAllData(){
@@ -84,6 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
         return res;
     }
+
+
 
 
     /*@Override

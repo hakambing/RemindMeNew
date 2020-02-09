@@ -443,30 +443,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         viewAll();
     }
 
-    //delete reminder
-    private void deleteReminder() {
-        // Only perform the delete if this is an existing reminder.
-        if (mCurrentReminderUri != null) {
-            // Call the ContentResolver to delete the reminder at the given content URI.
-            // Pass in null for the selection and selection args because the mCurrentreminderUri
-            // content URI already identifies the reminder that we want.
-            int rowsDeleted = getContentResolver().delete(mCurrentReminderUri, null, null);
 
-            // Show a toast message depending on whether or not the delete was successful.
-            if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
-                Toast.makeText(this, getString(R.string.editor_delete_reminder_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_delete_reminder_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // Close the activity
-        finish();
-    }
 
   public void AddData(){
         saveBtn.setOnClickListener(

@@ -144,9 +144,7 @@ public class EditReminder extends AppCompatActivity implements TimePickerDialog.
             public void afterTextChanged(Editable s) {}
         });
 
-        if (mTitleText.getText().toString().length() == 0){
-            mTitleText.setError("Reminder Title cannot be blank!");
-        }
+
 
         //Date
         mCalendar = Calendar.getInstance();
@@ -417,10 +415,43 @@ public class EditReminder extends AppCompatActivity implements TimePickerDialog.
             }
         });
 
+        UpdateData();
+        DeleteData();
 
 
 
     }
+    public void UpdateData(){
+        saveBtn.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        myDb.updateData(mTitle,mDate,mTime,mRepeat,mRepeatNo,mRepeatType,mSound,selectedID);
+                        Toast.makeText(EditReminder.this,"Reminder Updated!", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(EditReminder.this, MainActivity.class);
+                        startActivity(i);
+
+                    }
+                }
+        );
+
+    }
+    public void DeleteData(){
+        deleteBtn.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        myDb.deleteData(selectedID);
+                        Toast.makeText(EditReminder.this,"Reminder Deleted!", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(EditReminder.this, MainActivity.class);
+                        startActivity(i);
+
+                    }
+                }
+        );
+
+    }
+
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
