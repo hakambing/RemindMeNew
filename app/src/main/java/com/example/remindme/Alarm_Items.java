@@ -1,10 +1,12 @@
 package com.example.remindme;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,29 +32,33 @@ public class Alarm_Items extends ArrayAdapter<Reminder> {
 
         if(reminder != null){
             TextView title = (TextView) convertView.findViewById(R.id.recycle_title);
-            TextView date = (TextView) convertView.findViewById(R.id.recycle_date);
-            TextView time = (TextView) convertView.findViewById(R.id.recycle_time);
-            TextView repeat = (TextView) convertView.findViewById(R.id.recycle_repeat);
-            TextView repeat_no = (TextView) convertView.findViewById(R.id.recycle_repeat_no);
-            TextView repeat_type = (TextView) convertView.findViewById(R.id.recycle_repeat_type);
-            TextView sound = (TextView) convertView.findViewById(R.id.active_image);
+            TextView datetime = (TextView) convertView.findViewById(R.id.recycle_date_time);
+            TextView repeat = (TextView) convertView.findViewById(R.id.recycle_repeat_info);
+            ImageView active = (ImageView) convertView.findViewById(R.id.active_image);
+
+
 
             if (title != null){
                 title.setText((reminder.getTitle()));
             }
-            if (date != null){
-                date.setText((reminder.getDate()));
-            }if (time != null){
-                time.setText((reminder.getTime()));
+            if (datetime != null){
+                datetime.setText((reminder.getDate() +" "+ reminder.getTime()));
             }if (repeat != null){
-                repeat.setText((reminder.getRepeat()));
-            }if (repeat_no != null){
-                repeat_no.setText((reminder.getRepeat_No()));
-            }if (repeat_type != null){
-                repeat_type.setText((reminder.getRepeat_Type()));
-            }if (sound != null){
-                sound.setText((reminder.getSound()));
+                if (reminder.getRepeat().equals("true")){
+                    repeat.setText(("Every "+reminder.getRepeat_No()+ " "+ reminder.getRepeat_Type()));
+                }
+                else {
+                    repeat.setText("Repeat Off");
+                }
             }
+            if(reminder.getSound().equals("true")){
+                active.setImageResource(R.drawable.ic_notifications_active_black_24dp);
+            }else if (reminder.getSound().equals("false")) {
+                active.setImageResource(R.drawable.ic_notifications_off_black_24dp);
+            }
+
+
+
 
         }
         return convertView;

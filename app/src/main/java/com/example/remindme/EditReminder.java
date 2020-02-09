@@ -1,21 +1,15 @@
 package com.example.remindme;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -33,25 +27,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.example.remindme.data.AlarmReminderContract;
 import com.example.remindme.data.DatabaseHelper;
-import com.example.remindme.reminder.AlarmScheduler;
 
 import java.util.Calendar;
 
-public class NewReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, LoaderManager.LoaderCallbacks<Cursor> {
-    String msg = "Android : ";
-    DatabaseHelper myDb;
-    private static final int EXISTING_VEHICLE_LOADER = 0;
-
+public class EditReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, LoaderManager.LoaderCallbacks<Cursor> {
     private EditText mTitleText;
     private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText;
     private Calendar mCalendar;
     private int mYear, mMonth, mHour, mMinute, mDay;
-    private long mRepeatTime;
 
-    private Uri mCurrentReminderUri;
-    private boolean mVehicleHasChanged = false;
     private String mTitle;
     private String mTime;
     private String mDate;
@@ -59,6 +44,10 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
     private String mRepeatNo;
     private String mRepeatType;
     private String mSound;
+    private int selectedID;
+
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
 
     RelativeLayout date;
     RelativeLayout dateShow;
@@ -85,9 +74,9 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
     TextView rptMonth;
 
     Button cancelBtn;
-
+    Button deleteBtn;
     Button saveBtn;
-    Button viewAllBtn;
+
 
     ImageView mImageView;
     RelativeLayout mChooseBtn;
@@ -95,39 +84,13 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
     Switch switchSound;
 
-    // Values for orientation change
-    private static final String KEY_TITLE = "title_key";
-    private static final String KEY_TIME = "time_key";
-    private static final String KEY_DATE = "date_key";
-    private static final String KEY_REPEAT = "repeat_key";
-    private static final String KEY_REPEAT_NO = "repeat_no_key";
-    private static final String KEY_REPEAT_TYPE = "repeat_type_key";
-    private static final String KEY_ACTIVE = "active_key";
-
-    // Constant values in milliseconds
-    private static final long milMinute = 60000L;
-    private static final long milHour = 3600000L;
-    private static final long milDay = 86400000L;
-    private static final long milWeek = 604800000L;
-    private static final long milMonth = 2592000000L;
-
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
-
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            mVehicleHasChanged = true;
-            return false;
-        }
-    };
-
+    DatabaseHelper myDb;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_reminder);
-        myDb = new DatabaseHelper(this);
-
+        setContentView(R.layout.edit_reminder);
+        saveBtn = (Button) findViewById(R.id.setBtn);
+        deleteBtn = (Button) findViewById(R.id.deleteBtn);
 
         //initialise values
         mTitleText = (EditText) findViewById(R.id.editText);
@@ -139,30 +102,30 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         switchRepeat = (Switch) findViewById(R.id.repeat_switch);
         switchSound = (Switch) findViewById(R.id.sound_switch);
 
-        // Initialize default values
+        myDb = new DatabaseHelper(this);
 
-        mRepeat = "true";
-        mRepeatNo = Integer.toString(1);
-        mRepeatType = "Hour";
-        mSound = "true";
+        //get the intent extra from MainActivity
+        Intent receivedIntent = getIntent();
 
-        mCalendar = Calendar.getInstance();
-        mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-        mMinute = mCalendar.get(Calendar.MINUTE);
-        mYear = mCalendar.get(Calendar.YEAR);
-        mMonth = mCalendar.get(Calendar.MONTH) + 1;
-        mDay = mCalendar.get(Calendar.DATE);
+        //now get the itemID we passed as an extra
+        selectedID = receivedIntent.getIntExtra("id",-1);
 
-        mDate = mDay + "/" + mMonth + "/" + mYear;
-        mTime = mHour + ":" + mMinute;
+        //values
+        mTitle = receivedIntent.getStringExtra("title");
+        mDate = receivedIntent.getStringExtra("date");
+        mTime = receivedIntent.getStringExtra("time");
+        mRepeat = receivedIntent.getStringExtra("repeat");
+        mRepeatNo = receivedIntent.getStringExtra("repeat_no");
+        mRepeatType = receivedIntent.getStringExtra("repeat_type");
+        mSound = receivedIntent.getStringExtra("sound");
 
-        // Setup TextViews using reminder values
+        //set all the textviews
+        mTitleText.setText(mTitle);
         mDateText.setText(mDate);
         mTimeText.setText(mTime);
         mRepeatNoText.setText(mRepeatNo);
         mRepeatTypeText.setText(mRepeatType);
         mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-
 
         //Title
         mTitleText.addTextChangedListener(new TextWatcher() {
@@ -185,8 +148,14 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
             mTitleText.setError("Reminder Title cannot be blank!");
         }
 
-
         //Date
+        mCalendar = Calendar.getInstance();
+        mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+        mMinute = mCalendar.get(Calendar.MINUTE);
+        mYear = mCalendar.get(Calendar.YEAR);
+        mMonth = mCalendar.get(Calendar.MONTH) + 1;
+        mDay = mCalendar.get(Calendar.DATE);
+
         date = findViewById(R.id.date);
         dateShow = findViewById(R.id.dateShow);
         date.setOnClickListener(new View.OnClickListener(){
@@ -250,13 +219,19 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
             }
         });
 
-
         //repeat
         switchRepeat = findViewById(R.id.repeat_switch);
         repeatNum = findViewById(R.id.RepeatNo);
         repeatType = findViewById(R.id.RepeatType);
         repeatNumShow = findViewById(R.id.repeatNoShow);
         repeatTypeShow = findViewById(R.id.repeatTypeShow);
+
+        if (mRepeat.equals("false")){
+            switchRepeat.setChecked(false);
+        }else{
+            switchRepeat.setChecked(true);
+        }
+
         switchRepeat.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -366,8 +341,15 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
             }
         });
 
-        //Sound switch
+        //sound
         switchSound.findViewById(R.id.sound_switch);
+
+        if (mSound.equals("false")){
+            switchSound.setChecked(false);
+        }else{
+            switchSound.setChecked(true);
+        }
+
         switchSound.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -375,27 +357,23 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                     mSound = "true";
 
                 }else{
-                   mSound = "false";
+                    mSound = "false";
                 }
             }
         });
-
 
         //cancel button
         cancelBtn = findViewById(R.id.cancelBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(NewReminder.this, MainActivity.class);
+                Intent i = new Intent(EditReminder.this, MainActivity.class);
                 startActivity(i);
             }
         });
 
-
-
         //save button
         saveBtn = findViewById(R.id.setBtn);
-        viewAllBtn = findViewById(R.id.viewReminderBtn);
 
         //image selector
         mImageView = findViewById(R.id.image_view);
@@ -409,7 +387,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
             public void onClick(View v){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_DENIED){
+                            == PackageManager.PERMISSION_DENIED){
                         //permission not granted, request it
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         //show popup for runtime permission
@@ -439,75 +417,35 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
             }
         });
 
-      AddData();
-        viewAll();
-    }
 
-    //delete reminder
-    private void deleteReminder() {
-        // Only perform the delete if this is an existing reminder.
-        if (mCurrentReminderUri != null) {
-            // Call the ContentResolver to delete the reminder at the given content URI.
-            // Pass in null for the selection and selection args because the mCurrentreminderUri
-            // content URI already identifies the reminder that we want.
-            int rowsDeleted = getContentResolver().delete(mCurrentReminderUri, null, null);
 
-            // Show a toast message depending on whether or not the delete was successful.
-            if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
-                Toast.makeText(this, getString(R.string.editor_delete_reminder_failed),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_delete_reminder_successful),
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // Close the activity
-        finish();
-    }
-
-  public void AddData(){
-        saveBtn.setOnClickListener(
-                new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        boolean isInserted = myDb.insertData(mTitle,mDate,mTime,mRepeat,mRepeatNo,mRepeatType,mSound);
-                        if (isInserted==true){
-                            Toast.makeText(NewReminder.this,"Reminder Saved!", Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(NewReminder.this, MainActivity.class);
-                            startActivity(i);
-                        }else{
-                            Toast.makeText(NewReminder.this, "Error saving reminder.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-        );
 
     }
-   /* @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-        String[] projection = {
-                AlarmReminderContract.AlarmReminderEntry._ID,
-                AlarmReminderContract.AlarmReminderEntry.KEY_TITLE,
-                AlarmReminderContract.AlarmReminderEntry.KEY_DATE,
-                AlarmReminderContract.AlarmReminderEntry.KEY_TIME,
-                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT,
-                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO,
-                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE,
-                AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE,
-        };
+    }
 
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(this,   // Parent activity context
-                mCurrentReminderUri,         // Query the content URI for the current reminder
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
-    }*/
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
+    }
 
     //codes for "Add Image" function
     private void pickImageFromGallery(){
@@ -522,7 +460,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         switch (requestCode){
             case PERMISSION_CODE:{
                 if(grantResults.length >0 && grantResults[0]==
-                PackageManager.PERMISSION_GRANTED){
+                        PackageManager.PERMISSION_GRANTED){
                     pickImageFromGallery();
                 }
                 else {
@@ -543,152 +481,5 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
             mImageView.setVisibility(View.VISIBLE);
             deleteImage.setVisibility(View.VISIBLE);
         }
-    }
-
-
-
-
-
-
-    @Override
-    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-
-    }
-
-
-    public void viewAll(){
-        viewAllBtn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Cursor res = myDb.getAllData();
-                        if(res.getCount()==0){
-                            showMessage("no data sial","dog");
-                            return;
-                        }
-                        StringBuffer buffer = new StringBuffer();
-                        while (res.moveToNext()){
-                            buffer.append("Id :"+res.getString(0)+"\n");
-                            buffer.append("Title :"+res.getString(1)+"\n");
-                            buffer.append("Date :"+res.getString(2)+"\n");
-                            buffer.append("Time :"+res.getString(3)+"\n");
-                            buffer.append("Repeat :"+res.getString(4)+"\n");
-                            buffer.append("RepeatNo :"+res.getString(5)+"\n");
-                            buffer.append("RepeatType :"+res.getString(6)+"\n");
-                            buffer.append("Sound :"+res.getString(7)+"\n\n");
-
-
-                        }
-                        //show all data
-                        showMessage("Data",buffer.toString());
-
-                    }
-                }
-        );
-    }
-
-    public void showMessage(String title,String Message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(Message);
-        builder.show();
-    }
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-        if (cursor == null || cursor.getCount() < 1) {
-            return;
-        }
-
-        // Proceed with moving to the first row of the cursor and reading data from it
-        // (This should be the only row in the cursor)
-        if (cursor.moveToFirst()) {
-            int titleColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE);
-            int dateColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_DATE);
-            int timeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TIME);
-            int repeatColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT);
-            int repeatNoColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO);
-            int repeatTypeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE);
-            int activeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE);
-
-            // Extract out the value from the Cursor for the given column index
-            String title = cursor.getString(titleColumnIndex);
-            String date = cursor.getString(dateColumnIndex);
-            String time = cursor.getString(timeColumnIndex);
-            String repeat = cursor.getString(repeatColumnIndex);
-            String repeatNo = cursor.getString(repeatNoColumnIndex);
-            String repeatType = cursor.getString(repeatTypeColumnIndex);
-            String active = cursor.getString(activeColumnIndex);
-
-
-
-            // Update the views on the screen with the values from the database
-            mTitleText.setText(title);
-            mDateText.setText(date);
-            mTimeText.setText(time);
-            mRepeatNoText.setText(repeatNo);
-            mRepeatTypeText.setText(repeatType);
-            mRepeatText.setText("Every " + repeatNo + " " + repeatType + "(s)");
-            // Setup up active buttons
-            // Setup repeat switch
-            if (repeat.equals("false")) {
-                switchRepeat.setChecked(false);
-                mRepeatText.setText(R.string.repeat_off);
-
-            } else if (repeat.equals("true")) {
-                switchRepeat.setChecked(true);
-            }
-
-        }
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
-    }
-
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
-    }
-    /** Called when the activity is about to become visible. */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(msg, "The onStart() event");
-    }
-
-    /** Called when the activity has become visible. */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(msg, "The onResume() event");
-    }
-
-    /** Called when another activity is taking focus. */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(msg, "The onPause() event");
-    }
-
-    /** Called when the activity is no longer visible. */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(msg, "The onStop() event");
-    }
-
-    /** Called just before the activity is destroyed. */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(msg, "The onDestroy() event");
     }
 }

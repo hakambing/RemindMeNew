@@ -13,13 +13,14 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:contentInsetLeft="0dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="?attr/colorPrimary">
+        android:background="#00acee">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="To-do List"
             android:textSize="25dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"/>
     </androidx.appcompat.widget.Toolbar>
 
 
@@ -38,7 +39,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_black_24dp"
         app:fabSize="normal"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="#00acee"
         android:id="@+id/addListFab"
         app:elevation="10dp"
 
@@ -52,7 +53,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_access_alarm_black_24dp"
         app:fabSize="normal"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="#00acee"
         android:id="@+id/reminderFab"
         app:elevation="10dp"
         ></com.google.android.material.floatingactionbutton.FloatingActionButton>

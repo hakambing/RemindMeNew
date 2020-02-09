@@ -6,12 +6,12 @@
     android:background="?android:attr/selectableItemBackground"
     android:layout_height="86dp">
 
-    <!--<ImageView android:layout_width="40dp"
+   <!-- <ImageView android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_centerVertical="true"
-        android:id="@+id/thumbnail_image"/>-->
+        android:id="@+id/thumbnail_image"/> -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,77 +30,39 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#000000"
             tools:text="Title"
             android:textSize="20sp"/>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/recycle_date"
-        android:layout_width="164dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:textColor="@color/colorPrimary"
-        android:textSize="15sp"
-        tools:text="Date" />
-
-    <TextView
-            android:id="@+id/recycle_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
-            tools:text="Time" />
-</LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/recycle_repeat"
-                android:layout_width="92dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                tools:text="Repeat" />
-
-            <TextView
-                android:id="@+id/recycle_repeat_no"
-                android:layout_width="107dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                tools:text="Repeat No" />
         <TextView
-            android:id="@+id/recycle_repeat_type"
+            android:id="@+id/recycle_date_time"
             android:layout_width="match_parent"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="@color/colorPrimary"
-            tools:text="Repeat Type"/>
-        </LinearLayout>
+            android:textColor="#000000"
+            tools:text="Date and Time"/>
+
+        <TextView
+            android:id="@+id/recycle_repeat_info"
+            android:layout_width="match_parent"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            tools:text="Repeat No and Type"/>
+
     </LinearLayout>
 
-    <TextView android:layout_width="wrap_content"
+   <ImageView android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:src="@drawable/ic_notifications_off_black_24dp"
         android:layout_centerVertical="true"
-        android:id="@+id/active_image"
-        tools:text="Sound"/>
+        android:id="@+id/active_image"/>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.remindme.data;
+package com.example.remindme.todolist;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,28 +13,21 @@ import com.example.remindme.Reminder;
 
 import java.sql.Blob;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "remindmesalakau.db";
-    public static final String TABLE_NAME = "salakau";
+public class ToDoDatabaseHelper extends SQLiteOpenHelper {
+    public static final String DATABASE_NAME = "todolistdatabase.db";
+    public static final String TABLE_NAME = "todolist";
     public static final String COL_1 = "_ID";
     public static final String COL_2 = "TITLE";
-    public static final String COL_3 = "DATE";
-    public static final String COL_4 = "TIME";
-    public static final String COL_5  = "IMAGE";
-    public static final String COL_6 = "REPEAT";
-    public static final String COL_7 = "REPEAT_NO";
-    public static final String COL_8 = "REPEAT_TYPE";
-    public static final String COL_9 = "SOUND";
 
-    public DatabaseHelper(Context context) {
+    public ToDoDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
 
-      }
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("create table " + TABLE_NAME +" (_ID INTEGER PRIMARY KEY AUTOINCREMENT,TITLE TEXT, DATE TEXT, TIME TEXT,REPEAT TEXT, REPEAT_NO TEXT, REPEAT_TYPE TEXT, SOUND TEXT )");
+        db.execSQL("create table " + TABLE_NAME +" (_ID INTEGER PRIMARY KEY AUTOINCREMENT,TITLE TEXT)");
     }
 
     @Override
@@ -44,16 +37,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-   public boolean insertData(String title, String date, String time,String repeat, String repeat_no, String repeat_type, String sound){
+    public boolean insertData(String title){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2,title);
-        contentValues.put(COL_3,date);
-        contentValues.put(COL_4,time);
-        contentValues.put(COL_6,repeat);
-        contentValues.put(COL_7,repeat_no);
-        contentValues.put(COL_8,repeat_type);
-        contentValues.put(COL_9,sound);
+
         long result = db.insert(TABLE_NAME,null, contentValues);
         if (result == -1){
             return false;
@@ -62,19 +50,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
 
-    }
-
-    public Cursor getItemID(String title, String date, String time,String repeat, String repeat_no, String repeat_type, String sound){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT _ID FROM " + TABLE_NAME + " WHERE TITLE = '" + title + "' " +
-                "AND DATE = '" + date + "' " +
-                "AND TIME = '" + time + "' " +
-                "AND REPEAT = '" + repeat + "' " +
-                "AND REPEAT_NO = '" + repeat_no + "' " +
-                "AND REPEAT_TYPE = '" + repeat_type + "' " +
-                "AND SOUND = '" + sound + "'";
-        Cursor data = db.rawQuery(query, null);
-        return data;
     }
 
 

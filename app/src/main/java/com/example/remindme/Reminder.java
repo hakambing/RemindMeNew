@@ -10,16 +10,18 @@ public class Reminder {
     private String Repeat_No;
     private String Repeat_Type;
     private String Sound;
-    private String image;
+
 
     public Reminder(String title, String date, String time, String repeat, String repeat_no, String repeat_type, String sound){
         Title =title;
         Date = date;
         Time = time;
+
         Repeat = repeat;
         Repeat_No = repeat_no;
         Repeat_Type = repeat_type;
         Sound = sound;
+
     }
 
     public String getTitle() {
@@ -49,4 +51,6 @@ public class Reminder {
     public String getSound() {
         return Sound;
     }
+
+
 }

@@ -16,5 +16,7 @@
     <string name="editor_update_reminder_failed">Error</string>
     <string name="editor_update_reminder_successful">Reminder updated</string>
     <string name="repeat_off">Off</string>
+    <string name="title">Title</string>
+    <string name="item1">About</string>
 
 </resources>
