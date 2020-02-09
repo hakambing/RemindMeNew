@@ -1,17 +1,10 @@
-package com.example.remindme.data;
+package com.example.remindme.reminder;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-
-import androidx.annotation.Nullable;
-
-import com.example.remindme.Reminder;
-
-import java.sql.Blob;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "remindmesalakau.db";

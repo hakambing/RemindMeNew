@@ -1,11 +1,9 @@
-package com.example.remindme;
+package com.example.remindme.reminder;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -33,9 +31,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.example.remindme.data.AlarmReminderContract;
-import com.example.remindme.data.DatabaseHelper;
-import com.example.remindme.reminder.AlarmScheduler;
+import com.example.remindme.MainActivity;
+import com.example.remindme.R;
 
 import java.util.Calendar;
 
@@ -91,7 +88,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
     ImageView mImageView;
     RelativeLayout mChooseBtn;
-    ImageView deleteImage;
+    Button deleteImage;
 
     Switch switchSound;
 
@@ -463,28 +460,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         );
 
     }
-   /* @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        String[] projection = {
-                AlarmReminderContract.AlarmReminderEntry._ID,
-                AlarmReminderContract.AlarmReminderEntry.KEY_TITLE,
-                AlarmReminderContract.AlarmReminderEntry.KEY_DATE,
-                AlarmReminderContract.AlarmReminderEntry.KEY_TIME,
-                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT,
-                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO,
-                AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE,
-                AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE,
-        };
-
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(this,   // Parent activity context
-                mCurrentReminderUri,         // Query the content URI for the current reminder
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
-    }*/
 
     //codes for "Add Image" function
     private void pickImageFromGallery(){
@@ -578,52 +554,10 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-        if (cursor == null || cursor.getCount() < 1) {
-            return;
-        }
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
 
-        // Proceed with moving to the first row of the cursor and reading data from it
-        // (This should be the only row in the cursor)
-        if (cursor.moveToFirst()) {
-            int titleColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE);
-            int dateColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_DATE);
-            int timeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TIME);
-            int repeatColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT);
-            int repeatNoColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_NO);
-            int repeatTypeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_REPEAT_TYPE);
-            int activeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE);
-
-            // Extract out the value from the Cursor for the given column index
-            String title = cursor.getString(titleColumnIndex);
-            String date = cursor.getString(dateColumnIndex);
-            String time = cursor.getString(timeColumnIndex);
-            String repeat = cursor.getString(repeatColumnIndex);
-            String repeatNo = cursor.getString(repeatNoColumnIndex);
-            String repeatType = cursor.getString(repeatTypeColumnIndex);
-            String active = cursor.getString(activeColumnIndex);
-
-
-
-            // Update the views on the screen with the values from the database
-            mTitleText.setText(title);
-            mDateText.setText(date);
-            mTimeText.setText(time);
-            mRepeatNoText.setText(repeatNo);
-            mRepeatTypeText.setText(repeatType);
-            mRepeatText.setText("Every " + repeatNo + " " + repeatType + "(s)");
-            // Setup up active buttons
-            // Setup repeat switch
-            if (repeat.equals("false")) {
-                switchRepeat.setChecked(false);
-                mRepeatText.setText(R.string.repeat_off);
-
-            } else if (repeat.equals("true")) {
-                switchRepeat.setChecked(true);
-            }
-
-        }
     }
+
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {

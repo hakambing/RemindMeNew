@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -17,44 +16,35 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="To-do List"
+            android:text="Edit To Do"
             android:textSize="25dp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"/>
     </androidx.appcompat.widget.Toolbar>
 
-
-    <ListView
-        android:id="@+id/todoList"
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        ></ListView>
+        android:layout_height="wrap_content"
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:hint="@string/title"
+        android:ems="10"
+        android:id="@+id/addTitle"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:id="@+id/deleteToDo"
+        android:layout_below="@id/addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add_black_24dp"
-        app:fabSize="normal"
-        app:backgroundTint="#00acee"
-        android:id="@+id/addListFab"
-        app:elevation="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Delete"></Button>
 
-        ></com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
+        android:id="@+id/addToDo"
+        android:layout_below="@id/addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_access_alarm_white_24dp"
-        app:fabSize="normal"
-        app:backgroundTint="#00acee"
-        android:id="@+id/reminderFab"
-        app:elevation="10dp"
-        ></com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:layout_centerHorizontal="true"
+        android:text="Add"></Button>
+
 </RelativeLayout>

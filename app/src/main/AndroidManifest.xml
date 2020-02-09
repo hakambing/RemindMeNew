@@ -25,7 +25,7 @@
             android:theme="@style/AppTheme"></activity>
 
         <activity
-            android:name=".NewReminder"
+            android:name=".reminder.NewReminder"
             android:theme="@style/AppTheme"
             android:label=""></activity>
         <activity
@@ -37,7 +37,7 @@
             android:theme="@style/AppTheme"
             android:label=""></activity>
         <activity
-            android:name=".EditReminder"
+            android:name=".reminder.EditReminder"
             android:theme="@style/AppTheme"
             android:label=""></activity>
     </application>

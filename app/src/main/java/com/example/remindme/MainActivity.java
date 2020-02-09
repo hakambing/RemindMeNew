@@ -14,14 +14,17 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.remindme.data.DatabaseHelper;
+import com.example.remindme.reminder.Alarm_Items;
+import com.example.remindme.reminder.DatabaseHelper;
+import com.example.remindme.reminder.EditReminder;
+import com.example.remindme.reminder.NewReminder;
+import com.example.remindme.reminder.Reminder;
 import com.example.remindme.todolist.ToDoList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     ListView reminderListView;
     Reminder reminder;
     ProgressDialog prgDialog;
-    RemindCursorAdapter mCursorAdapter;
+
 
     Toolbar toolbar;
 

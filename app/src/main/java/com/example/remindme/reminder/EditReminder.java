@@ -1,4 +1,4 @@
-package com.example.remindme;
+package com.example.remindme.reminder;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -27,7 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
-import com.example.remindme.data.DatabaseHelper;
+import com.example.remindme.MainActivity;
+import com.example.remindme.R;
 
 import java.util.Calendar;
 
@@ -80,7 +81,7 @@ public class EditReminder extends AppCompatActivity implements TimePickerDialog.
 
     ImageView mImageView;
     RelativeLayout mChooseBtn;
-    ImageView deleteImage;
+    Button deleteImage;
 
     Switch switchSound;
 

@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.remindme.R;
-import com.example.remindme.Reminder;
 
 import java.util.ArrayList;
 

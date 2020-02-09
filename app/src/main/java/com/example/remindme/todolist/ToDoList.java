@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -11,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.remindme.MainActivity;
 import com.example.remindme.R;
-import com.example.remindme.data.DatabaseHelper;
+import com.example.remindme.reminder.EditReminder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -48,6 +50,31 @@ public class ToDoList extends AppCompatActivity implements View.OnClickListener 
             }
 
         }
+
+       /* toDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String title = todoList.get(i).getTitle();
+
+                Cursor data = myDb.getItemID(title);
+                int itemID = -1;
+                while(data.moveToNext()){
+                    itemID = data.getInt(0);
+                }
+                if(itemID > -1){
+                    Intent editScreenIntent = new Intent(ToDoList.this, EditReminder.class);
+                    editScreenIntent.putExtra("id",itemID);
+                    editScreenIntent.putExtra("title",title);
+                    startActivity(editScreenIntent);
+
+
+                }
+                else{
+                    Toast.makeText(ToDoList.this,"Hi",Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });*/
 
 
         FloatingActionButton fab1 = findViewById(R.id.addListFab);

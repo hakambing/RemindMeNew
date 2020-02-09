@@ -1,4 +1,4 @@
-package com.example.remindme;
+package com.example.remindme.reminder;
 
 import android.graphics.Bitmap;
 
