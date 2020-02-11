@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.remindme.reminder.Alarm_Items;
@@ -27,6 +28,8 @@ import com.example.remindme.reminder.NewReminder;
 import com.example.remindme.reminder.Reminder;
 import com.example.remindme.todolist.ToDoList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Reminder reminder;
     ProgressDialog prgDialog;
 
+    TextView count;
 
     Toolbar toolbar;
 
@@ -111,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             }
         });
+
+        count = (TextView) findViewById(R.id.textViewRemind);
+        int rows = myDb.getCount();
+        count.setText(rows + " reminders");
 
 
 

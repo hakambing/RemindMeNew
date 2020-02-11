@@ -8,6 +8,7 @@
 
 
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -27,14 +28,55 @@
         </androidx.appcompat.widget.Toolbar>
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/topBar"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/textViewReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="Reminder"
+            android:textColor="#000000"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:paddingBottom="10dp"
+           />
+
+        <TextView
+            android:id="@+id/textViewRemind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="No reminders"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="60dp"
+         />
+
+    </LinearLayout>
 
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/topBar"
+        />
 
     <ListView
         android:id="@+id/reminderList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/view"
 
         ></ListView>
 

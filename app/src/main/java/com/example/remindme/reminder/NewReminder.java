@@ -392,7 +392,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
 
         //save button
         saveBtn = findViewById(R.id.setBtn);
-        viewAllBtn = findViewById(R.id.viewReminderBtn);
+        //viewAllBtn = findViewById(R.id.viewReminderBtn);
 
         //image selector
         mImageView = findViewById(R.id.image_view);
@@ -437,7 +437,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
         });
 
       AddData();
-        viewAll();
+        //viewAll();
     }
 
 
@@ -509,7 +509,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
     }
 
 
-    public void viewAll(){
+    /*public void viewAll(){
         viewAllBtn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -538,7 +538,7 @@ public class NewReminder extends AppCompatActivity implements TimePickerDialog.O
                     }
                 }
         );
-    }
+    }*/
 
     public void showMessage(String title,String Message){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

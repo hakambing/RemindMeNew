@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "remindmesalakau.db";
@@ -90,6 +91,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM salakau WHERE _ID = '" + id + "'";
         db.execSQL(query);
+    }
+
+    public int getCount(){
+        String countQuery = "SELECT * FROM salakau";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery,null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 
 
