@@ -55,14 +55,14 @@ public class ToDoDatabaseHelper extends SQLiteOpenHelper {
     //Update
     public void updateData(String titleNew, int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE salakau SET TITLE = '" + titleNew + "' WHERE _ID = '" + id + "'";
+        String query = "UPDATE todolist SET TITLE = '" + titleNew + "' WHERE _ID = '" + id + "'";
         db.execSQL(query);
     }
 
     //Delete
     public void deleteData(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM salakau WHERE _ID = '" + id + "'";
+        String query = "DELETE FROM todolist WHERE _ID = '" + id + "'";
         db.execSQL(query);
     }
 

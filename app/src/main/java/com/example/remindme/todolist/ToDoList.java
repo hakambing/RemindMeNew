@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.remindme.MainActivity;
 import com.example.remindme.R;
+import com.example.remindme.reminder.Alarm_Items;
 import com.example.remindme.reminder.EditReminder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -48,34 +49,40 @@ public class ToDoList extends AppCompatActivity implements View.OnClickListener 
                 toDo = new ToDo(data.getString(1));
                 todoList.add(toDo);
             }
+            ToDo_Items adapter = new ToDo_Items(this,R.layout.todo_items,todoList);
+            toDoListView = (ListView) findViewById(R.id.todoList);
+            toDoListView.setAdapter(adapter);
 
         }
 
-       /* toDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String title = todoList.get(i).getTitle();
+try {
+    toDoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            String title = todoList.get(i).getTitle();
 
-                Cursor data = myDb.getItemID(title);
-                int itemID = -1;
-                while(data.moveToNext()){
-                    itemID = data.getInt(0);
-                }
-                if(itemID > -1){
-                    Intent editScreenIntent = new Intent(ToDoList.this, EditReminder.class);
-                    editScreenIntent.putExtra("id",itemID);
-                    editScreenIntent.putExtra("title",title);
-                    startActivity(editScreenIntent);
-
-
-                }
-                else{
-                    Toast.makeText(ToDoList.this,"Hi",Toast.LENGTH_LONG).show();
-
-                }
+            Cursor data = myDb.getItemID(title);
+            int itemID = -1;
+            while (data.moveToNext()) {
+                itemID = data.getInt(0);
             }
-        });*/
+            if (itemID > -1) {
+                Intent editScreenIntent = new Intent(ToDoList.this, EditToDo.class);
+                editScreenIntent.putExtra("id", itemID);
+                editScreenIntent.putExtra("title", title);
+                startActivity(editScreenIntent);
 
+
+            } else {
+                Toast.makeText(ToDoList.this, "Hi", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    });
+}catch (NullPointerException ignored){
+    Toast.makeText(ToDoList.this, "No To Do list", Toast.LENGTH_LONG).show();
+
+}
 
         FloatingActionButton fab1 = findViewById(R.id.addListFab);
 

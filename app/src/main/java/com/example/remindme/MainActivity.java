@@ -73,49 +73,50 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             reminderListView.setAdapter(adapter);
         }
 
-
-       //click ListView
-        reminderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String title = reminderList.get(i).getTitle();
-                String date = reminderList.get(i).getDate();
-                String time = reminderList.get(i).getTime();
-                String repeat = reminderList.get(i).getRepeat();
-                String repeat_no = reminderList.get(i).getRepeat_No();
-                String repeat_type = reminderList.get(i).getRepeat_Type();
-                String sound = reminderList.get(i).getSound();
-                Log.d(msg, "onItemClick: You Clicked on "+ title);
-
-
-
-                Cursor data = myDb.getItemID(title,date,time,repeat,repeat_no,repeat_type,sound);
-                int itemID = -1;
-                while(data.moveToNext()){
-                    itemID = data.getInt(0);
-                }
-                if(itemID > -1){
-                    Intent editScreenIntent = new Intent(MainActivity.this, EditReminder.class);
-                    editScreenIntent.putExtra("id",itemID);
-                    editScreenIntent.putExtra("title",title);
-                    editScreenIntent.putExtra("date",date);
-                    editScreenIntent.putExtra("time",time);
-                    editScreenIntent.putExtra("repeat",repeat);
-                    editScreenIntent.putExtra("repeat_no",repeat_no);
-                    editScreenIntent.putExtra("repeat_type",repeat_type);
-                    editScreenIntent.putExtra("sound",sound);
-                    startActivity(editScreenIntent);
+try {
+    //click ListView
+    reminderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            String title = reminderList.get(i).getTitle();
+            String date = reminderList.get(i).getDate();
+            String time = reminderList.get(i).getTime();
+            String repeat = reminderList.get(i).getRepeat();
+            String repeat_no = reminderList.get(i).getRepeat_No();
+            String repeat_type = reminderList.get(i).getRepeat_Type();
+            String sound = reminderList.get(i).getSound();
+            Log.d(msg, "onItemClick: You Clicked on " + title);
 
 
-                }
-                else{
-                    Toast.makeText(MainActivity.this,time,Toast.LENGTH_LONG).show();
+            Cursor data = myDb.getItemID(title, date, time, repeat, repeat_no, repeat_type, sound);
+            int itemID = -1;
+            while (data.moveToNext()) {
+                itemID = data.getInt(0);
+            }
+            if (itemID > -1) {
+                Intent editScreenIntent = new Intent(MainActivity.this, EditReminder.class);
+                editScreenIntent.putExtra("id", itemID);
+                editScreenIntent.putExtra("title", title);
+                editScreenIntent.putExtra("date", date);
+                editScreenIntent.putExtra("time", time);
+                editScreenIntent.putExtra("repeat", repeat);
+                editScreenIntent.putExtra("repeat_no", repeat_no);
+                editScreenIntent.putExtra("repeat_type", repeat_type);
+                editScreenIntent.putExtra("sound", sound);
+                startActivity(editScreenIntent);
 
-                }
+
+            } else {
+                Toast.makeText(MainActivity.this, time, Toast.LENGTH_LONG).show();
 
             }
-        });
 
+        }
+    });
+}catch(NullPointerException ignored){
+    Toast.makeText(MainActivity.this, "No reminders", Toast.LENGTH_LONG).show();
+
+}
         count = (TextView) findViewById(R.id.textViewRemind);
         int rows = myDb.getCount();
         count.setText(rows + " reminders");

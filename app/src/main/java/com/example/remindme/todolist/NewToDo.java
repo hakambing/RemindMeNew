@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.remindme.MainActivity;
 import com.example.remindme.R;
+import com.example.remindme.reminder.DatabaseHelper;
 
 public class NewToDo extends AppCompatActivity {
     String msg = "Android : ";
@@ -28,6 +29,7 @@ public class NewToDo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_todo);
+        myDb = new ToDoDatabaseHelper(this);
 
         //initailise values
         mTitleText = (EditText) findViewById(R.id.addTitle);
@@ -62,7 +64,15 @@ public class NewToDo extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean isInserted = myDb.insertData(mTitle);
+                        boolean isInserted = true;
+                        try{
+                            isInserted = myDb.insertData(mTitle);
+
+                        }catch (NullPointerException ignored){
+                            Toast.makeText(NewToDo.this, "Error saving item", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(NewToDo.this, ToDoList.class);
+                            startActivity(i);
+                        }
                         if (isInserted==true){
                             Toast.makeText(NewToDo.this, "Item saved!", Toast.LENGTH_LONG).show();
                             Intent i = new Intent(NewToDo.this, ToDoList.class);

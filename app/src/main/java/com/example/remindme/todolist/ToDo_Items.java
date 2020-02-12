@@ -31,7 +31,7 @@ public class ToDo_Items extends ArrayAdapter<ToDo> {
         ToDo toDo = toDos.get(position);
 
         if(toDo != null){
-            TextView title = (TextView) convertView.findViewById(R.id.recycle_title);
+            TextView title = (TextView) convertView.findViewById(R.id.todoTitle);
 
 
             if (title != null){

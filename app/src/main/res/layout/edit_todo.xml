@@ -30,13 +30,17 @@
         android:ems="10"
         android:id="@+id/addTitle"
         android:layout_centerVertical="true"/>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/addTitle"
+    android:gravity="center">
     <Button
         android:id="@+id/deleteToDo"
-        android:layout_below="@id/addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+
         android:text="Delete"></Button>
 
     <Button
@@ -44,7 +48,8 @@
         android:layout_below="@id/addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Add"></Button>
 
+
+        android:text="Update"></Button>
+</LinearLayout>
 </RelativeLayout>
